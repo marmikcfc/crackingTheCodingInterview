@@ -2,8 +2,8 @@
 
  import java.util.*;
 /*
-	Implement an algorithm to determine if a string has all unique characters. What
-    if you cannot use additional data structures?
+	Write an algorithm such that if an element in an MxN matrix is 0, its entire row
+	and column are set to 0.
 */
 public class prob7{
 	 public static void zeroReplace(int[][] m) {
