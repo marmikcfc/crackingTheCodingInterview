@@ -1,4 +1,3 @@
-import java.util.*;
 /*
  Given a circular linked list, implement an algorithm which returns the node at
 the beginning of the loop.
