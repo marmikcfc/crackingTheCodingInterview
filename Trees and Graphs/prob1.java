@@ -1,6 +1,6 @@
 import java.util.*;
 /**
- * Implementation of a Binary Tree class in Java
+ * Check if Tree is balanced
  */
 class BinaryTree<E> {
 
@@ -61,7 +61,7 @@ class BinaryTree<E> {
    * Building a sequential tree
    */
   public TreeNode buildTree() {
-    return buildTree(1, 10);
+    return buildTree(1, 13);
   }
 
   private TreeNode buildTree(int n, int max) {
@@ -71,19 +71,6 @@ class BinaryTree<E> {
       return new TreeNode(n, buildTree(2*n, max), buildTree(2*n+1, max));
   }
 
-  public void traversePreOrder(){
-    System.out.print("Pre order: ");
-    traversePreOrder(parent);
-    System.out.println();
-  }
-
-  private void traversePreOrder(TreeNode root){
-    if(root!=null){
-      System.out.print(" " + root.data);
-      traversePreOrder(root.left);
-      traversePreOrder(root.right);
-    }
-  }
 
   public void traverseInOrder(){
     System.out.print("In order: ");
@@ -99,58 +86,62 @@ class BinaryTree<E> {
     }
   }
 
-  public void traversePostOrder(){
-    System.out.print("In order: ");
-    traversePostOrder(parent);
-    System.out.println();
-  }
-
-  private void traversePostOrder(TreeNode root){
-    if(root!=null){
-      traversePostOrder(root.left);
-      traversePostOrder(root.right);
-      System.out.print(" " + root.data);
-    }
-  }
+  
 
 public int getHeight(TreeNode root) {
-if (root == null) return 0; // Base case
- return Math.max(getHeight(root.left),
- getHeight(root.right)) + 1;
+
+  if (root == null) return 0; // Base case
+
+  int leftHeight = getHeight(root.left);
+ if (leftHeight == -1) {
+ return -1; // Not balanced
+ }
+
+ int rightHeight = getHeight(root.right);
+ if (rightHeight == -1) {
+ return -1; // Not balanced
+ }
+
+ int heightDiff = leftHeight - rightHeight;
+ if (Math.abs(heightDiff) > 1) {
+ return -1;
+ } else { // Recurse
+ return  Math.max(leftHeight,rightHeight) + 1;
+ }
  }
 
   public boolean isBalanced(TreeNode root) {
- if (root == null) return true; // Base case
 
- int heightDiff = getHeight(root.left) - getHeight(root.right);
- if (Math.abs(heightDiff) > 1) {
- return false;
- } else { // Recurse
- return isBalanced(root.left) && isBalanced(root.right);
- }
+    if(getHeight(root) == -1){
+      return false;
+    }
+    return true;
+ 
  }
 
 }
 
-class BTree {
+class prob1 {
 
    public static void main(String[] args){
     
       BinaryTree<Integer> tree = new BinaryTree<Integer>();
       BinaryTree<Integer>.TreeNode<Integer> left  = tree.new TreeNode<Integer>(5);
-      BinaryTree<Integer>.TreeNode<Integer> right = tree.new TreeNode<Integer>(6);
+      BinaryTree<Integer>.TreeNode<Integer> rightRightRight = tree.new TreeNode<Integer>(61);
+      BinaryTree<Integer>.TreeNode<Integer> rightRight = tree.new TreeNode<Integer>(11,null,rightRightRight);
+      BinaryTree<Integer>.TreeNode<Integer> right = tree.new TreeNode<Integer>(6,null,rightRight);
+
+
       BinaryTree<Integer>.TreeNode<Integer> root  = tree.new TreeNode<Integer>(7, left, right);
       tree.setParent(root);
-      tree.traversePreOrder();
       tree.traverseInOrder();
-      tree.traversePostOrder();
+      System.out.println(tree.isBalanced(root));
+
 
       tree = new BinaryTree<Integer>();
       root  = tree.buildTree();
       tree.setParent(root);
-      tree.traversePreOrder();
       tree.traverseInOrder();
-      tree.traversePostOrder();
       System.out.println(tree.isBalanced(root));
 
    }
