@@ -1,9 +1,7 @@
 import java.util.*;
-/**
- * Implementation of a Binary Tree class in Java
- */
-class BinaryTree<E> {
 
+class BinarySearchTree<E extends Comparable <E>> {
+  
   public class TreeNode<E> {
     public TreeNode left;
     public TreeNode right;
@@ -23,71 +21,57 @@ class BinaryTree<E> {
       this.right = right;
     }
 
-    public void setData(E data){
-      this.data = data;
+    public E getData(){
+      return this.data;
     }
-
-    public void setLeft(TreeNode left){
-      this.left = left;
-    }
-
-    public void setRight(TreeNode right){
-      this.right = right;
-    }
-
-    @SuppressWarnings("unchecked")
-    public E getLeft(){
-      return (E)this.left.data;
-    }
-
-    @SuppressWarnings("unchecked")
-    public E getRight(){
-      return (E)this.right.data;
-    }
-
   }
 
-  private TreeNode parent;
+  private TreeNode root, overallRoot;
 
-  public TreeNode getParent(){
-    return this.parent;
+  public TreeNode getRoot(){
+    return this.overallRoot;
   }
 
-  public void setParent(TreeNode node){
-    this.parent = node;
+  public void add(E element){
+    overallRoot = add(overallRoot, element);
   }
 
-  /**
-   * Building a sequential tree
-   */
-  public TreeNode buildTree() {
-    return buildTree(1, 10);
-  }
-
-  private TreeNode buildTree(int n, int max) {
-    if(n > max)
-      return null;
-    else 
-      return new TreeNode(n, buildTree(2*n, max), buildTree(2*n+1, max));
-  }
-
-  public void traversePreOrder(){
-    System.out.print("Pre order: ");
-    traversePreOrder(parent);
-    System.out.println();
-  }
-
-  private void traversePreOrder(TreeNode root){
-    if(root!=null){
-      System.out.print(" " + root.data);
-      traversePreOrder(root.left);
-      traversePreOrder(root.right);
+  public TreeNode add(TreeNode root, E element){
+    if(root == null){
+      root = new TreeNode(element);
+      System.out.println(element);
     }
+    else if(element.compareTo((E)root.getData()) < 0){
+      root.left = add(root.left, element);
+      System.out.println("/");
+      System.out.println(element);
+    }
+    else{
+      root.right = add(root.right, element);
+      System.out.println("\\");
+      System.out.println(element);
+    }
+    return root;
+  }
+
+  public boolean contains(E element){
+    return contains(overallRoot, element);
+  }
+
+  private boolean contains(TreeNode root, E element){
+    if(root == null)
+      return false;
+    else if(element.compareTo((E)root.getData()) == 0)
+      return true;
+    else if(element.compareTo((E)root.getData()) < 0)
+      return contains(root.left, element);
+    else
+      return contains(root.right, element);
   }
 
   public void traverseInOrder(){
     System.out.print("In order: ");
-    traverseInOrder(parent);
+    traverseInOrder(overallRoot);
     System.out.println();
   }
 
@@ -100,8 +84,8 @@ class BinaryTree<E> {
   }
 
   public void traversePostOrder(){
-    System.out.print("In order: ");
-    traversePostOrder(parent);
+    System.out.print("Post order: ");
+    traversePostOrder(overallRoot);
     System.out.println();
   }
 
@@ -110,10 +94,28 @@ class BinaryTree<E> {
       traversePostOrder(root.left);
       traversePostOrder(root.right);
       System.out.print(" " + root.data);
+
     }
   }
 
-public int getHeight(TreeNode root) {
+    public void traversePreOrder(){
+    System.out.print("Pre order: ");
+    traversePreOrder(overallRoot);
+    System.out.println();
+  }
+
+  private void traversePreOrder(TreeNode root){
+    if(root!=null){
+      System.out.print(" " + root.data);
+      traversePreOrder(root.left);
+      traversePreOrder(root.right);
+      
+
+    }
+  }
+
+
+  public int getHeight(TreeNode root) {
 if (root == null) return 0; // Base case
  return Math.max(getHeight(root.left),
  getHeight(root.right)) + 1;
@@ -130,30 +132,39 @@ if (root == null) return 0; // Base case
  }
  }
 
- 
+  public static int min = Integer.MIN_VALUE;
+ public static boolean checkIfBST(TreeNode n) {
+if (n == null) return true;
+// Check / recurse left
+ if (!checkIfBST(n.left)) return false;
+
+ // Check current
+ if (n.data <= min) return false;
+ min = n.data;
+
+ // Check / recurse right
+ if (!checkIfBST(n.right)) return false;
+
+ return true; // All good!
+ }
+
 
 }
 
-class BTree {
+class prob5 {
+  public static void main(String[] args){
+    BinarySearchTree<Integer> tree = new BinarySearchTree<Integer>();
+    System.out.println("Treee");
+    int[] array = {84, 69, 76, 86, 94, 91};
+    for(int i: array){
+      tree.add(i);
+    }
 
-   public static void main(String[] args){
+    tree.traverseInOrder();
+    tree.traversePostOrder();
+    tree.traversePreOrder();
+    System.out.println(tree.checkIfBST());
+
     
-      BinaryTree<Integer> tree = new BinaryTree<Integer>();
-      BinaryTree<Integer>.TreeNode<Integer> left  = tree.new TreeNode<Integer>(5);
-      BinaryTree<Integer>.TreeNode<Integer> right = tree.new TreeNode<Integer>(6);
-      BinaryTree<Integer>.TreeNode<Integer> root  = tree.new TreeNode<Integer>(7, left, right);
-      tree.setParent(root);
-      tree.traversePreOrder();
-      tree.traverseInOrder();
-      tree.traversePostOrder();
-
-      tree = new BinaryTree<Integer>();
-      root  = tree.buildTree();
-      tree.setParent(root);
-      tree.traversePreOrder();
-      tree.traverseInOrder();
-      tree.traversePostOrder();
-      System.out.println(tree.isBalanced(root));
-
-   }
+  }
 }
