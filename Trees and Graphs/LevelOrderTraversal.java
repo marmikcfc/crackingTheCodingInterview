@@ -60,11 +60,29 @@ class LevelOrderTraversal<E extends Comparable<E>> {
 
       Queue<TreeNode<E>> queue = new LinkedList<TreeNode<E>>();
       queue.add(root);
+      int currentLevel=1;
+      int nextLevel=0;
       while(!queue.isEmpty()){
          TreeNode current = queue.remove();
+         currentLevel--;
          System.out.print((E)current.getData() + " ");
-         if(current.left != null) queue.add(current.left);
-         if(current.right != null) queue.add(current.right);
+         if(current.left != null){
+
+               queue.add(current.left);
+               nextLevel++;  
+         } 
+         
+         if(current.right != null){
+
+              queue.add(current.right);
+              nextLevel++;
+         }
+
+         if(currentLevel == 0){
+            System.out.println();
+            currentLevel=nextLevel;
+            nextLevel = 0;
+         } 
       }
     }
 
